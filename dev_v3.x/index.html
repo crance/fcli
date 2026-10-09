@@ -1,6 +1,6 @@
 ---
-title: Fortify CLI (fcli) Installation &amp; Usage
-fcli_version: 0.20250430.085926-dev_v3.x
+title: 'Fortify CLI (fcli) Installation &amp; Usage'
+fcli_version: 0.20261009.102642-dev_v3.x
 ---
 
 <!DOCTYPE html>
@@ -12,45 +12,55 @@ fcli_version: 0.20250430.085926-dev_v3.x
 <title>Fortify CLI (fcli) Installation &amp; Usage</title>
 
 {% include asciidoc-head.html %}
+{% include fcli-enhancements.html %}
 
 </head>
 <body class="article toc2 toc-left">
 
-{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20250430.085926-dev_v3.x" %}
+{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20261009.102642-dev_v3.x" %}
 
 
 <div id="header">
 <h1>Fortify CLI (fcli) Installation &amp; Usage</h1>
 <div class="details">
-<span id="revnumber">version 0.20250430.085926-dev_v3.x</span>
+<span id="revnumber">version 0.20261009.102642-dev_v3.x</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_migration_from_v2_x">Migration from v2.x</a></li>
+<li><a href="#_fcli_based_ci_integrations">Fcli-based CI Integrations</a></li>
 <li><a href="#_release_assets">Release Assets</a></li>
 <li><a href="#_installation">Installation</a>
 <ul class="sectlevel2">
-<li><a href="#_managed_installation">Managed Installation</a></li>
+<li><a href="#_using_fortifysetup">Using @fortify/setup</a></li>
 <li><a href="#_manual_installation">Manual Installation</a></li>
 </ul>
 </li>
-<li><a href="#_upgrade">Upgrade</a></li>
+<li><a href="#_upgrade">Upgrade</a>
+<ul class="sectlevel2">
+<li><a href="#_using_fortifysetup_2">Using @fortify/setup</a></li>
+<li><a href="#_manual_upgrade">Manual Upgrade</a></li>
+</ul>
+</li>
+<li><a href="#_migration_from_v2_x">Migration from v2.x</a></li>
 <li><a href="#_command_structure">Command Structure</a></li>
 <li><a href="#_common_options">Common Options</a>
 <ul class="sectlevel2">
 <li><a href="#_h_help">-h | --help</a></li>
 <li><a href="#_env_prefix">--env-prefix</a></li>
-<li><a href="#_log_level">--log-level</a></li>
 <li><a href="#_log_file">--log-file</a></li>
+<li><a href="#_log_level">--log-level</a></li>
+<li><a href="#_log_mask">--log-mask</a></li>
+<li><a href="#_debug">--debug</a></li>
 <li><a href="#_o_output">-o | --output</a></li>
 <li><a href="#_style">--style</a></li>
-<li><a href="#_output_to_file">--output-to-file</a></li>
-<li><a href="#_progress">--progress</a></li>
 <li><a href="#_store">--store</a></li>
+<li><a href="#_to_file">--to-file</a></li>
+<li><a href="#_progress">--progress</a></li>
 <li><a href="#_q_query">-q | --query</a></li>
 <li><a href="#_option_expressions">Option Expressions</a></li>
+<li><a href="#authenticated_http_urls">Authenticated HTTP(S) URLs</a></li>
 </ul>
 </li>
 <li><a href="#_session_management">Session Management</a>
@@ -88,6 +98,7 @@ fcli_version: 0.20250430.085926-dev_v3.x
 </div>
 </div>
 <div id="content">
+{% raw %}
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>Introduction</h2>
 <div class="sectionbody">
@@ -104,6 +115,9 @@ fcli_version: 0.20250430.085926-dev_v3.x
 </li>
 <li>
 <p><a href="#_installation">Both plain Java and native platform binaries for Windows&#44; Linux and Mac available</a></p>
+</li>
+<li>
+<p><a href="#_fcli_based_ci_integrations">Fcli-based CI integrations</a> for a unified yet customizable experience across GitHub, GitLab, Azure DevOps, and other CI/CD systems</p>
 </li>
 <li>
 <p><a href="#_command_structure">Modular command structure</a>, making it easy to focus on particular tasks</p>
@@ -215,11 +229,54 @@ fcli_version: 0.20250430.085926-dev_v3.x
 </div>
 </div>
 <div class="sect1">
-<h2 id="_migration_from_v2_x"><a class="anchor" href="#_migration_from_v2_x"></a>Migration from v2.x</h2>
+<h2 id="_fcli_based_ci_integrations"><a class="anchor" href="#_fcli_based_ci_integrations"></a>Fcli-based CI Integrations</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Upgrading from fcli v2.x to fcli v3.x may require you to update your workflows and, if applicable, updating any
-custom fcli actions. Please see the <a href="../migration-v2.x-v3.x.html">migration guide</a> for details.</p>
+<p>Fcli provides seamless integration of OpenText Fortify Application Security Testing into various CI/CD platforms through the standardized <code>fcli action run ci</code> command. These integrations leverage the fcli <code>ci</code> action to provide a consistent, powerful approach to security testing across different CI systems.</p>
+</div>
+<div class="paragraph">
+<p>Key benefits of fcli-based CI integrations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Unified approach</strong>: Same fcli <code>ci</code> action works across all CI platforms with platform-specific optimizations</p>
+</li>
+<li>
+<p><strong>Comprehensive functionality</strong>: Supports both FoD and SSC backends with full SAST &amp; SCA scanning capabilities</p>
+</li>
+<li>
+<p><strong>Flexible configuration</strong>: Environment variable-based configuration with sensible defaults</p>
+</li>
+<li>
+<p><strong>Production-ready</strong>: Built-in features for application version/release management, vulnerability exports, and more</p>
+</li>
+<li>
+<p><strong>Easy to use</strong>: Simple setup with minimal configuration required to get started</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a complete overview of all available CI integrations and their versions, see the <a href="ci/index.html">CI Integrations</a> landing page.</p>
+</div>
+<div class="paragraph">
+<p>Currently supported CI/CD platforms:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="ci/github/v3.1.x/index.html"><strong>Fortify GitHub Actions</strong></a>: Seamless integration for GitHub Actions workflows</p>
+</li>
+<li>
+<p><a href="ci/gitlab/v2.0.x/index.html"><strong>Fortify GitLab Components</strong></a>: Native GitLab CI/CD pipeline components</p>
+</li>
+<li>
+<p><a href="ci/ado/script/index.html"><strong>Fortify Azure DevOps</strong></a>: Script-based integration for Azure DevOps pipelines</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Each integration provides platform-specific documentation including setup instructions, configuration reference, and usage examples for both FoD and SSC backends.</p>
 </div>
 </div>
 </div>
@@ -286,11 +343,130 @@ found, please try with the Java version as it may be an issue specific to the na
 <div class="sect1">
 <h2 id="_installation"><a class="anchor" href="#_installation"></a>Installation</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_using_fortifysetup"><a class="anchor" href="#_using_fortifysetup"></a>Using @fortify/setup</h3>
 <div class="paragraph">
-<p>The instructions in this section are only applicable if you wish to install the native or Java binaries onto your local system. We also provide Docker images for fcli; see <a href="https://hub.docker.com/repository/docker/fortifydocker/fcli/general">fortifydocker/fcli</a> for information on how to run fcli using these Docker images.</p>
+<p>If you have <code>npx</code> available on the system where you want to install fcli and possibly other Fortify tools, <strong>@fortify/setup</strong> is the recommended approach for installing fcli in both CI/CD pipelines and local development environments. This lightweight npm package automatically bootstraps fcli, verifies its integrity using RSA signatures, and provides cross-platform support with minimal dependencies.</p>
 </div>
 <div class="paragraph">
-<p>To install the fcli executables on your local system, start by visiting the fcli <a href="https://github.com/fortify/fcli/releases">Releases</a> page as described in the previous section, and downloading the <code>fcli.jar</code> file or appropriate native binary archive for your platform. Native binary archives will need to be extracted to a temporary directory, the <code>fcli.jar</code> file can be used as-is.</p>
+<p><strong>Benefits:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Automatic download and verification of fcli from GitHub releases or custom URLs</p>
+</li>
+<li>
+<p>Multi-platform support (Linux, macOS, Windows)</p>
+</li>
+<li>
+<p>Flexible configuration via environment variables or config file</p>
+</li>
+<li>
+<p>Can use pre-installed fcli (3.14.0+) to skip downloads</p>
+</li>
+<li>
+<p>Consistent experience across different environments</p>
+</li>
+<li>
+<p>Full documentation: <a href="https://github.com/fortify/fortify-setup-js/blob/main/USAGE.md">fortify-setup-js USAGE.md</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Quick Start (Linux/Mac):</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"># Initialize fcli with auto-detected version
+npx @fortify/setup env init --tools=fcli:auto
+
+# Set environment variables
+source &lt;(npx @fortify/setup env shell)
+
+# Verify installation
+fcli --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Quick Start (Windows PowerShell):</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-powershell" data-lang="powershell"># Initialize fcli with auto-detected version
+npx @fortify/setup env init --tools=fcli:auto
+
+# Set environment variables
+npx @fortify/setup env powershell | Invoke-Expression
+
+# Verify installation
+fcli --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the <code>npx @fortify/setup env init</code> also allows for specifying additional/other Fortify tools in the <code>--tools</code> option, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"># Initialize fcli with auto-detected version, and specific ScanCentral Client version
+npx @fortify/setup env init --tools=fcli:auto,sc-client:25.2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Configuration Examples:</strong></p>
+</div>
+<div class="paragraph">
+<p>To customize fcli bootstrapping behavior, you can use the <code>npx @fortify/setup bootstrap-config</code> command as shown in the following examples. Configuration needs to be applied before running the <code>npx @fortify/setup env</code> commands.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The following examples use command-line options to store configuration in a config file (<code>~/.config/fortify/setup/config.json</code> on Linux/Mac or <code>%USERPROFILE%\.config\fortify\setup\config.json</code> on Windows). This option-based approach is designed for manual/local installation where configuration persists across multiple commands and can be reused. For CI/CD integrations, use environment variables instead as documented in the <a href="ci/index.html">CI Integrations</a> guides to avoid multiple pipelines from interfering with each other due to sharing the same configuration file.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"># Pin to specific fcli version
+npx @fortify/setup bootstrap-config --fcli-version=v3.14.1
+
+# Use pre-installed fcli (skip download)
+npx @fortify/setup bootstrap-config --fcli-path=/path/to/fcli
+
+# Use custom download URL (internal mirror)
+npx @fortify/setup bootstrap-config --fcli-url=https://my-mirror.com/fcli-linux.tgz
+
+# View current configuration
+npx @fortify/setup bootstrap-config</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Version Pinning (Recommended for CI/CD):</strong></p>
+</div>
+<div class="paragraph">
+<p>Pin @fortify/setup to at least a major version to avoid breaking changes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash"># Pin to major version (gets bug fixes and features)
+npx @fortify/setup@2 env init --tools=fcli:auto</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_manual_installation"><a class="anchor" href="#_manual_installation"></a>Manual Installation</h3>
+<div class="paragraph">
+<p>If you prefer direct control over fcli installation, or if you cannot use <code>@fortify/setup</code> in your environment, you can install fcli manually or using the built-in managed installation approach. We also provide Docker images for fcli; see <a href="https://hub.docker.com/repository/docker/fortifydocker/fcli/general">fortifydocker/fcli</a> for information on how to run fcli using these Docker images.</p>
+</div>
+<div class="sect3">
+<h4 id="_download_and_verification"><a class="anchor" href="#_download_and_verification"></a>Download and Verification</h4>
+<div class="paragraph">
+<p>To install the fcli executables on your local system, start by visiting the fcli <a href="https://github.com/fortify/fcli/releases">Releases</a> page and downloading the <code>fcli.jar</code> file or appropriate native binary archive for your platform. Native binary archives will need to be extracted to a temporary directory, the <code>fcli.jar</code> file can be used as-is.</p>
 </div>
 <div class="paragraph">
 <p>As a best practice, you should verify the integrity of the downloaded file. Release assets include <code>*.sha256</code> and <code>*.rsa_sha256</code> for this purpose, with the latter being preferred for better security. For example, after downloading both <code>fcli-linux.tgz</code> and <code>fcli-linux.tgz.rsa_sha256</code>, you can verify integrity by running the following OpenSSL command:</p>
@@ -319,8 +495,9 @@ found, please try with the Java version as it may be an issue specific to the na
 <div class="paragraph">
 <p>Once downloaded, verified and extracted (if applicable), you can either perform a manual or managed installation. Managed installation is recommended, but only available on internet-connected systems. Please see the sections below for more information.</p>
 </div>
-<div class="sect2">
-<h3 id="_managed_installation"><a class="anchor" href="#_managed_installation"></a>Managed Installation</h3>
+</div>
+<div class="sect3">
+<h4 id="_managed_installation"><a class="anchor" href="#_managed_installation"></a>Managed Installation</h4>
 <div class="paragraph">
 <p>Managed installation is only available on internet-connected systems, or if your company hosts the various Fortify tools (including fcli) internally and provides a corresponding custom tool definitions bundle. Advantages of a managed installation:</p>
 </div>
@@ -419,8 +596,8 @@ found, please try with the Java version as it may be an issue specific to the na
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_manual_installation"><a class="anchor" href="#_manual_installation"></a>Manual Installation</h3>
+<div class="sect3">
+<h4 id="_manual_installation_2"><a class="anchor" href="#_manual_installation_2"></a>Manual Installation</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -441,9 +618,37 @@ found, please try with the Java version as it may be an issue specific to the na
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="_upgrade"><a class="anchor" href="#_upgrade"></a>Upgrade</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_using_fortifysetup_2"><a class="anchor" href="#_using_fortifysetup_2"></a>Using @fortify/setup</h3>
+<div class="paragraph">
+<p>If you installed fcli using @fortify/setup, upgrading is straightforward.</p>
+</div>
+<div class="paragraph">
+<p><strong>Linux/Mac:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">npx @fortify/setup env init --tools=fcli:v3     # Or 'latest', or specific version
+source &lt;(npx @fortify/setup env shell)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Windows PowerShell:</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-powershell" data-lang="powershell"># Upgrade to latest v3.x version
+npx @fortify/setup env init --tools=fcli:v3     # Or 'latest', or specific version
+npx @fortify/setup env powershell | Invoke-Expression</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_manual_upgrade"><a class="anchor" href="#_manual_upgrade"></a>Manual Upgrade</h3>
 <div class="paragraph">
 <p>If you prefer a manual installation/upgrade, you can download the latest fcli version for your platform from the fcli <a href="https://github.com/fortify/fcli/releases">Releases</a> page and follow the <a href="#_manual_installation">Manual Installation</a> instructions above, adjusting any manually created wrapper scripts to point to the new installation.</p>
 </div>
@@ -508,6 +713,16 @@ found, please try with the Java version as it may be an issue specific to the na
 </div>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_migration_from_v2_x"><a class="anchor" href="#_migration_from_v2_x"></a>Migration from v2.x</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Upgrading from fcli v2.x to fcli v3.x may require you to update your workflows and, if applicable, updating any
+custom fcli actions. Please see the <a href="../migration-v2.x-v3.x.html">migration guide</a> for details.</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_command_structure"><a class="anchor" href="#_command_structure"></a>Command Structure</h2>
 <div class="sectionbody">
@@ -548,6 +763,13 @@ found, please try with the Java version as it may be an issue specific to the na
 </div>
 </div>
 <div class="sect2">
+<h3 id="_log_file"><a class="anchor" href="#_log_file"></a>--log-file</h3>
+<div class="paragraph">
+<p>This option can be used on every fcli (sub-)command to specify the file to which to output log data. If not specified, currently no log data will be written, although future versions may specify a default log file
+location in the fcli data folder.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_log_level"><a class="anchor" href="#_log_level"></a>--log-level</h3>
 <div class="paragraph">
 <p>This option can be used on every fcli (sub-)command to specify the fcli log level; see the help output for a list of allowed levels. Note that this option also requires the <code>--log-file</code> option to be specified,
@@ -555,10 +777,15 @@ otherwise no log will be written.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_log_file"><a class="anchor" href="#_log_file"></a>--log-file</h3>
+<h3 id="_log_mask"><a class="anchor" href="#_log_mask"></a>--log-mask</h3>
 <div class="paragraph">
-<p>This option can be used on every fcli (sub-)command to specify the file to which to output log data. If not specified, currently no log data will be written, although future versions may specify a default log file
-location in the fcli data folder.</p>
+<p>Masking level to apply to logging data. Allowed values: high, medium, low, none. Default value: medium. Note that this is on a best-effort basis; you should always check log contents for sensitive data before sharing or publishing logs.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_debug"><a class="anchor" href="#_debug"></a>--debug</h3>
+<div class="paragraph">
+<p>Enable both fcli trace logging and collection of extra debugging data on applicable fcli actions and commands, for example enabling debug logging on tools invoked through fcli tool run commands, or enabling server-side debug log generation.</p>
 </div>
 </div>
 <div class="sect2">
@@ -608,7 +835,7 @@ location in the fcli data folder.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>A full list of style elements that can be applied to the output is available in fcli help output or manual pages; the following table lists the most commonly used style elements:</p>
+<p>The table below describes all style elements currently supported by fcli. Fcli usage help and online manual pages also list available style elements for quick review. If you notice any style elements listed in fcli usage help that are not listed below, please <a href="https://github.com/fortify/fcli/issues">file a documentation bug</a>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -639,6 +866,18 @@ location in the fcli data folder.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">By default, tables are printed without borders; use <code>border</code> to output a table with borders, or <code>md-border</code> to output a table with Markdown borders. Note that <code>md-border</code> is only meant for outputting simple, short property values. The output will not be a valid Markdown table if any of the output properties contains pipe or newline characters, or if contents are too long to be printed on a single line.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>wrap</code><br>
+<code>no-wrap</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>table</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">By default, table cell contents will be wrapped if they don&#8217;t fit cell width; use the <code>no-wrap</code> style element to abbreviate cell contents instead.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>fast-output</code><br>
+<code>no-fast-output</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>table</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fcli v3.10.0 and below used to collect all output data in memory to calculate appropriate table column widths. As of fcli v3.11.0, to allow for faster output, fcli will by default output data in increments of 100 records, sampling the contents of the first 100 records to determine column width. Use <code>no-fast-output</code> to revert to the old behavior, but note that due to other changes (taking terminal width into consideration and <code>(no-)wrap</code> style, table output may still be slightly different than before.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pretty</code><br>
 <code>no-pretty</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>json</code><br>
@@ -665,9 +904,15 @@ location in the fcli data folder.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_output_to_file"><a class="anchor" href="#_output_to_file"></a>--output-to-file</h3>
+<h3 id="_store"><a class="anchor" href="#_store"></a>--store</h3>
 <div class="paragraph">
-<p>Available on virtually all (leaf) commands that output data, this option can be used to write the command output data to a file, in the format specified by the <code>--output</code> option listed above. In some cases, this may be more convenient than redirecting the output to a file. For example, although currently not implemented, fcli could potentially skip creating the output file if there is no output data or if an error occurs. Also, for commands that output status updates, like <code>wait-for</code> commands, the <code>--output-to-file</code> option allows for status updates to be written to standard output while the final output of the command will be written to the file specified.</p>
+<p>Available on virtually all (leaf) commands that output data, this option can be used to store command output data in an fcli variable. For more details, see the <a href="#_fcli_variables">Fcli Variables</a> section.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_to_file"><a class="anchor" href="#_to_file"></a>--to-file</h3>
+<div class="paragraph">
+<p>Write command output in the format as specified through the <code>--output</code> option to the given file. Compared to using redirection, any status messages will still appear on the console rather than being included in the output file.</p>
 </div>
 </div>
 <div class="sect2">
@@ -693,12 +938,6 @@ location in the fcli data folder.</p>
 <p><code>ansi</code>: Uses ANSI escape sequences to overwrite previous progress messages. This will be used by default if ANSI capabilities are detected. Supports multi-line progress messages.</p>
 </li>
 </ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_store"><a class="anchor" href="#_store"></a>--store</h3>
-<div class="paragraph">
-<p>Available on virtually all (leaf) commands that output data, this option can be used to store command output data in an fcli variable. For more details, see the <a href="#_fcli_variables">Fcli Variables</a> section.</p>
 </div>
 </div>
 <div class="sect2">
@@ -927,6 +1166,50 @@ All commands that automatically generate server-side queries provide the <code>-
 <p>Which one to choose depends on any other characters appearing in the expression. For example, in <code>bash</code> you&#8217;d usually use single quotes to have everything in-between passed to fcli as-is, unless you want to use specific shell features inside the expression. Note that you can use the <code>#env</code> function to retrieve environment variable contents, so you don&#8217;t need to use shell syntax to insert environment variable contents into expressions.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="authenticated_http_urls"><a class="anchor" href="#authenticated_http_urls"></a>Authenticated HTTP(S) URLs</h3>
+<div class="paragraph">
+<p>Various fcli options and parameters accept either a local file path or a remote HTTP(S) URL. For remote HTTP(S) URLs, fcli also supports providing authentication details through the URL userinfo component.</p>
+</div>
+<div class="paragraph">
+<p>Supported formats:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Basic authentication: <code>https://user:password@example.com/path</code></p>
+</li>
+<li>
+<p>Bearer token: <code>https://bearer:token@example.com/path</code></p>
+</li>
+<li>
+<p>Single custom header: <code>https://header:Header-Name=Header%20Value@example.com/path</code></p>
+</li>
+<li>
+<p>Multiple custom headers: <code>https://headers:Header-Name=Header%20Value&amp;Other-Header=Other%20Value@example.com/path</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Notes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Any special characters in usernames, passwords, tokens, header names, or header values must be URL-encoded.</p>
+</li>
+<li>
+<p>For Basic authentication, the first <code>:</code> separates the username from the password; any additional <code>:</code> characters are treated as part of the password.</p>
+</li>
+<li>
+<p>Fcli strips the userinfo component from the request URL before sending the request and converts the userinfo contents to HTTP request headers.</p>
+</li>
+<li>
+<p>You should only use trusted HTTPS endpoints when loading remote content like actions, public keys, or tool definitions.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1034,7 +1317,14 @@ fcli ssc session logout --user &lt;user&gt; --password &lt;password&gt;</code></
 <li>
 <p><code>FCLI_TRUSTSTORE_PWD</code>: Trust store password</p>
 </li>
+<li>
+<p><code>FCLI_DISABLE_OS_TRUSTSTORE</code>: Set to <code>true</code> or <code>1</code> to disable automatic merge with OS trust store certificates</p>
+</li>
 </ul>
+</div>
+<div class="paragraph">
+<p>When configuring trust stores through <code>fcli config truststore set</code>, use <code>--no-os-truststore</code> to persistently disable automatic
+OS trust store certificate merge for that configured trust store.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1202,7 +1492,7 @@ fcli sc-sast scan wait-for ::x::jobToken</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Fcli provides the regular <code>get</code>, <code>list</code> and <code>delete</code> operations on the <code>+fcli util variable</code> command tree, and actual variable contents can be retrieved using the <code>fcli util variable contents</code> command. Please see help output or manual pages for more information on these commands.</p>
+<p>Fcli provides the regular <code>get</code>, <code>list</code> and <code>delete</code> operations on the <code>fcli util variable</code> command tree, and actual variable contents can be retrieved using the <code>fcli util variable contents</code> command. Please see help output or manual pages for more information on these commands.</p>
 </div>
 <div class="paragraph">
 <p>The <code>fcli util variable contents</code> command supports the regular fcli output options and query capabilities. This allows for advanced us cases, like retrieving server data once and then outputting it in multiple formats, potentially even applying separate filters. As an example:</p>
@@ -1295,7 +1585,7 @@ fcli util variable contents myVersions -o 'expr={id}\n' --output-to-file myVersi
 <div class="sect2">
 <h3 id="_custom_actions"><a class="anchor" href="#_custom_actions"></a>Custom Actions</h3>
 <div class="paragraph">
-<p>Apart from built-in actions, users can also develop and run custom actions, which could be customized versions of built-in actions or completely new actions. The following sections provide more information on custom action usage and development.</p>
+<p>Apart from built-in actions, users can also develop and run custom actions, which could be customized versions of built-in actions or completely new actions. The sections below provide more information on custom action usage. For more information on developing custom actions, please refer to the <a href="action-development.html">Fcli Action Development Guide</a>.</p>
 </div>
 <div class="sect3">
 <h4 id="_compatibility"><a class="anchor" href="#_compatibility"></a>Compatibility</h4>
@@ -1338,52 +1628,10 @@ fcli util variable contents myVersions -o 'expr={id}\n' --output-to-file myVersi
 </ul>
 </div>
 <div class="paragraph">
+<p>For remote HTTP(S) URLs, these commands also support authenticated URLs as described in the <a href="#authenticated_http_urls">Authenticated HTTP(S) URLs</a> section.</p>
+</div>
+<div class="paragraph">
 <p>To allow for easy access, custom actions can also be imported into fcli using the <code>fcli * action import</code> command, which allows for importing either a single action YAML file or all action YAML files from a local or remote zip-file. Once imported, these actions can be accessed in the same way as built-in actions. Note that imported custom actions will override built-in actions if they have the same name. You can use the <code>fcli * action reset</code> command to remove all previously imported custom actions.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_custom_action_development"><a class="anchor" href="#_custom_action_development"></a>Custom Action Development</h4>
-<div class="paragraph">
-<p>There are several resources available to help you developing custom actions. To start with, you can use the <code>fcli * action get &lt;action&gt;</code> command to view the contents of any built-in action as a basis for developing your own custom actions. Fcli also provides an action schema, which allows YAML editors and IDEs to provide code completion, documentation and validation for fcli action YAML documents. You may need to install a plugin to enable proper YAML editing and schema support. Following are some commonly used IDE plugins that are known to work with one of the schema associations listed below:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Visual Studio Code: <a href="https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml">Red Hat YAML plugin</a></p>
-</li>
-<li>
-<p>Eclipse: <a href="https://marketplace.eclipse.org/content/wild-web-developer-html-css-javascript-typescript-nodejs-angular-json-yaml-kubernetes-xml">Wild Web Developer</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>For optimal compatibility with various IDEs and YAML editors, fcli allows the schema to be declared in two ways:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>YAML comment, supported by IDEs like Visual Studio Code, Eclipse and IntelliJ:</p>
-<div class="listingblock">
-<div class="content">
-<pre># yaml-language-server: $schema=https://fortify.github.io/fcli/schemas/action/fcli-action-schema-2.1.0.json</pre>
-</div>
-</div>
-</li>
-<li>
-<p>YAML property, supported by Eclipse and some other YAML editors:</p>
-<div class="listingblock">
-<div class="content">
-<pre>$schema: https://fortify.github.io/fcli/schemas/action/fcli-action-schema-2.1.0.json</pre>
-</div>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Fcli requires at least one of these statements to be provided in action YAML files. You may also provide both, in which case the schema URL must be identical in both statements. Once you&#8217;ve added one of these statements to your action YAML file, your IDE or YAML editor may automatically provide support for editing and validating action YAML files. If not, try closing and re-opening the YAML file, or consult the documentation of your IDE or YAML editor.</p>
-</div>
-<div class="paragraph">
-<p>As shown in the sample schema statements above, the current fcli version 0.20250430.085926-dev_v3.x supports schema version <a href="https://fortify.github.io/fcli/schemas/action/fcli-action-schema-2.1.0.json">2.1.0</a>. Other fcli versions may support different schema versions. In general, fcli also provides backward compatibility for earlier schema versions with the same schema major version range, and forward compatibility for later schema patch versions within the same schema minor version range.</p>
 </div>
 </div>
 </div>
@@ -1450,34 +1698,6 @@ fcli util variable contents myVersions -o 'expr={id}\n' --output-to-file myVersi
 <p>Plain string, for example having the environment variable <code>FCLI_DEFAULT_PUBKEY</code> set to <code>string:&lt;public key contents&gt;</code>. You can use CI/CD secrets/variables to set the <code>FCLI_DEFAULT_PUBKEY</code> to a value like this. For testing, you can use a <code>bash</code> command like the following: <code>export FCLI_DEFAULT_PUBKEY=string:$(cat my-public.key)</code>.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p><strong>Design considerations</strong></p>
-</div>
-<div class="paragraph">
-<p>Given that actions can define and process arbitrary parameters, it may be tempting to implement generic, highly configurable actions. For example, you could implement a highly configurable action for checking all kinds of security policy criteria, with the actual criteria to be checked being passed as action parameters.</p>
-</div>
-<div class="paragraph">
-<p>However, from a CI/CD perspective, this means that every pipeline must properly set these action parameters. Pipeline authors may copy existing pipelines or use pipeline templates to have these action parameters set to predefined values, but what if those parameters need to updated globally? Potentially, this means that you&#8217;d need to update thousands of pipelines to adjust action parameters.</p>
-</div>
-<div class="paragraph">
-<p>This is exactly the reason why we don&#8217;t provide highly configurable <code>check-policy</code> actions, but instead just provide a default implementation that can be customized according to organization requirements. Instead of passing fine-grained pass/fail criteria as action parameters, those criteria are hard-coded into the action. If there is a need to apply different criteria for different types of applications, for example based on business risk, multiple approaches are possible:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Use SSC/FoD application version/release attributes like <code>Business Risk</code> or other characteristics to identify what criteria to apply. This is the preferred approach, to allow the criteria to be applied to automatically match the centrally maintained attributes/characteristics.</p>
-</li>
-<li>
-<p>Have the action take one or more parameters that identify what criteria to apply. This could be a policy name, or a functional identifier like <code>--business-risk</code>.</p>
-</li>
-<li>
-<p>Publish separate actions that implement different policy criteria, like <code>check-high-risk-policy</code> and <code>check-low-risk-policy</code>.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The examples above or based on actions that perform policy checks, but the same principles and considerations (may) apply to other types of actions.</p>
 </div>
 </div>
 </div>
@@ -1611,11 +1831,12 @@ may experience any of the following behavior:</p>
 </div>
 </div>
 </div>
+{% endraw %}
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.20250430.085926-dev_v3.x<br>
-Last updated 2025-04-30 09:01:38 UTC
+Version 0.20261009.102642-dev_v3.x<br>
+Last updated 2026-10-09 10:30:18 UTC
 </div>
 </div>
 </body>

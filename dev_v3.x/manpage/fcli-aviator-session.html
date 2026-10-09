@@ -1,5 +1,5 @@
 ---
-title: fcli-aviator-session(1)
+title: 'fcli-aviator-session(1)'
 fcli_version: 
 ---
 
@@ -12,11 +12,12 @@ fcli_version:
 <title>fcli-aviator-session(1)</title>
 
 {% include asciidoc-head.html %}
+{% include fcli-enhancements.html %}
 
 </head>
 <body class="manpage toc2 toc-left">
 
-{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20250430.085926-dev_v3.x" %}
+{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20261009.102642-dev_v3.x" %}
 
 
 <div id="header">
@@ -26,16 +27,17 @@ fcli_version:
 <ul class="sectlevel1">
 <li><a href="#_synopsis">Synopsis</a></li>
 <li><a href="#_description">Description</a></li>
-<li><a href="#_options">Options</a></li>
+<li><a href="#_generic_fcli_options_also_see_documentation_link_below">Generic fcli options (also see documentation link below)</a></li>
 <li><a href="#_commands">Commands</a></li>
 </ul>
 </div>
 <h2>Name</h2>
 <div class="sectionbody">
-<p>fcli-aviator-session - Manage Aviator user sessions (start here).</p>
+<p>fcli-aviator-session - Manage Fortify Aviator user sessions (start here).</p>
 </div>
 </div>
 <div id="content">
+{% raw %}
 <div class="sect1">
 <h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
 <div class="sectionbody">
@@ -51,13 +53,13 @@ fcli_version:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_options"><a class="anchor" href="#_options"></a>Options</h2>
+<h2 id="_generic_fcli_options_also_see_documentation_link_below"><a class="anchor" href="#_generic_fcli_options_also_see_documentation_link_below"></a>Generic fcli options (also see documentation link below)</h2>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
 <dd>
-<p>Show this help message and exit. Use 'fcli &lt;command&gt; -h' to display help for subcommands.</p>
+<p>Use 'fcli [command] -h' to display help for fcli (sub-)commands.</p>
 </dd>
 </dl>
 </div>
@@ -70,25 +72,26 @@ fcli_version:
 <dl>
 <dt class="hdlist1"><a href="fcli-aviator-session-list.html"><strong>list</strong>, <strong>ls</strong></a></dt>
 <dd>
-<p>List active and expired SAST Aviator user sessions.</p>
+<p>List active and expired Fortify Aviator user sessions.</p>
 </dd>
 <dt class="hdlist1"><a href="fcli-aviator-session-login.html"><strong>login</strong></a></dt>
 <dd>
-<p>Create a user session for interacting with SAST Aviator.</p>
+<p>Create a user session for interacting with Fortify Aviator.</p>
 </dd>
 <dt class="hdlist1"><a href="fcli-aviator-session-logout.html"><strong>logout</strong></a></dt>
 <dd>
-<p>Terminate SAST Aviator user session.</p>
+<p>Terminate a Fortify Aviator user session.</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
+{% endraw %}
 </div>
 <div id="footer">
 <div id="footer-text">
 Version <br>
-Last updated 2025-04-30 09:01:38 UTC
+Last updated 2026-10-09 10:29:49 UTC
 </div>
 </div>
 </body>

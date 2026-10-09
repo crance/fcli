@@ -1,5 +1,5 @@
 ---
-title: fcli-tool-sc-client-install(1)
+title: 'fcli-tool-sc-client-install(1)'
 fcli_version: 
 ---
 
@@ -12,11 +12,12 @@ fcli_version:
 <title>fcli-tool-sc-client-install(1)</title>
 
 {% include asciidoc-head.html %}
+{% include fcli-enhancements.html %}
 
 </head>
 <body class="manpage toc2 toc-left">
 
-{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20250430.085926-dev_v3.x" %}
+{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20261009.102642-dev_v3.x" %}
 
 
 <div id="header">
@@ -27,8 +28,8 @@ fcli_version:
 <li><a href="#_synopsis">Synopsis</a></li>
 <li><a href="#_description">Description</a></li>
 <li><a href="#_options">Options</a></li>
-<li><a href="#_output_options">Output options</a></li>
-<li><a href="#_generic_fcli_options">Generic fcli options</a></li>
+<li><a href="#_output_options_also_see_documentation_link_below">Output options (also see documentation link below)</a></li>
+<li><a href="#_generic_fcli_options_also_see_documentation_link_below">Generic fcli options (also see documentation link below)</a></li>
 </ul>
 </div>
 <h2>Name</h2>
@@ -37,24 +38,23 @@ fcli_version:
 </div>
 </div>
 <div id="content">
+{% raw %}
 <div class="sect1">
 <h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>fcli tool sc-client install</strong> [<strong>-y</strong>] [<strong>--[no-]global-bin</strong>] [<strong>--with-jre</strong>]
-                            [<strong>--jre-platform</strong>=<em>&lt;jrePlatform&gt;</em>]
+<p><strong>fcli tool sc-client install</strong> [<strong>-y</strong>] [<strong>--[no-]global-bin</strong>] [<strong>--[no-]with-jre</strong>]
+                            [<strong>--jre</strong>=<em>&lt;jrePath&gt;</em>] [<strong>--jre-platform</strong>=<em>&lt;jrePlatform&gt;</em>]
                             [<strong>--on-digest-mismatch</strong>=<em>&lt;onDigestMismatch&gt;</em>]
                             [<strong>-p</strong>=<em>&lt;platform&gt;</em>] [<strong>--progress</strong>=<em>&lt;type&gt;</em>]
                             [<strong>-t</strong>=<em>&lt;clientAuthToken&gt;</em>] [<strong>-v</strong>=<em>&lt;version&gt;</em>]
                             [<strong>-u</strong>=<em>&lt;versionsToUninstall&gt;</em>[,
                             <em>&lt;versionsToUninstall&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [[<strong>-h</strong>]
-                            [<strong>--env-prefix</strong>=<em>&lt;envPrefix&gt;</em>] [<strong>--log-file</strong>=<em>&lt;logFile&gt;</em>]
-                            [<strong>--log-level</strong>=<em>&lt;logLevel&gt;</em>]
-                            [<strong>--log-mask</strong>=<em>&lt;logMaskLevel&gt;</em>] [<strong>--debug</strong>]]
-                            [<strong>-d</strong>=<em>&lt;installDir&gt;</em> | <strong>-b</strong>=<em>&lt;baseDir&gt;</em>] <em class="[<strong>-o</strong>=_type_
-                        _    [=&lt;args&gt;">] [<strong>--style</strong>=</em>&lt;outputStyleElements&gt;_[,
-                            <em>&lt;outputStyleElements&gt;</em>&#8230;&#8203;]]&#8230;&#8203; <em class="<strong>--store</strong>=_variableName_
-                _            [:&lt;propertyNames&gt;">] [<strong>--to-file</strong>=</em>&lt;outputFile&gt;_]]</p>
+                            [<strong>--env-prefix</strong>=<em>&lt;prefix&gt;</em>] [<strong>--log-file</strong>=<em>&lt;logFile&gt;</em>]
+                            [<strong>--log-level</strong>=<em>&lt;logLevel&gt;</em>] [<strong>--log-mask</strong>=<em>&lt;level&gt;</em>]
+                            [<strong>--debug</strong>]] [<strong>-d</strong>=<em>&lt;installDir&gt;</em> | <strong>-b</strong>=<em>&lt;baseDir&gt;</em>]
+                            [[<strong>-o</strong>=<em>&lt;type+args&gt;</em>] [<strong>--style*<em>=&lt;style&gt;,&#8230;&#8203;</em>]&#8230;&#8203;
+                            <em class="</strong>--store*=_&lt;var&gt;[:&lt;prop&gt;">] [<strong>--to-file</strong>=</em>&lt;outputFile&gt;_]]</p>
 </div>
 </div>
 </div>
@@ -62,7 +62,13 @@ fcli_version:
 <h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This command allows for tool installation and upgrade. By default, tools are installed to &lt;base-dir&gt;/&lt;tool-name&gt;/&lt;version&gt;. The base directory can be specified using the --base-dir option, defaulting to &lt;user.home&gt;/fortify/tools if not specified. Unless the --no-global-bin option is specified, wrapper scripts for invoking each tool will be installed to &lt;base-dir&gt;/bin, allowing users to add this single directory to the system PATH for easy invocation of all installed tools.</p>
+<p>Note: Use 'fcli sc-sast sensor list' to determine compatible sc-client versions (either globally, for a specific sensor pool, or for a specific application version).</p>
+</div>
+<div class="paragraph">
+<p>This command allows for fine-grained control over tool installation and upgrade. If you are looking for a simpler way to set up Fortify tools, please consider using the 'fcli tool env init' command instead, which provides a higher-level interface for setting up Fortify tools and automatically detects environment characteristics.</p>
+</div>
+<div class="paragraph">
+<p>By default, tools are installed to &lt;base-dir&gt;/&lt;tool-name&gt;/&lt;version&gt;. The base directory can be specified using the --base-dir option, defaulting to &lt;user.home&gt;/fortify/tools if not specified. Unless the --no-global-bin option is specified, wrapper scripts for invoking each tool will be installed to &lt;base-dir&gt;/bin, allowing users to add this single directory to the system PATH for easy invocation of all installed tools if you like invoking those tools directly. Note however that tools installed through fcli can also be invoked through the 'fcli tool &lt;tool-name&gt; run' command, allowing to run either last installed version or a specific version without needing to modify the system PATH or having to remember the installation directory.</p>
 </div>
 <div class="paragraph">
 <p>It is also possibly to specify an explicit installation directory through the --install-dir option, for example to install the tool to a specific location that will be cached by a CI/CD system. The --install-dir option doesn&#8217;t create the &lt;base-dir&gt;/&lt;tool-name&gt;/&lt;version&gt; directory structure, and doesn&#8217;t install wrapper scripts to a shared bin-directory.</p>
@@ -106,11 +112,15 @@ fcli_version:
 </dd>
 <dt class="hdlist1"><strong>-d</strong>, <strong>--install-dir</strong>=<em>&lt;installDir&gt;</em></dt>
 <dd>
-<p>Tool installation directory. As described above, it is recommended to use --base-dir instead.</p>
+<p>Tool installation directory. As described above, it is recommended to use --base-dir instead for manual installations.</p>
+</dd>
+<dt class="hdlist1"><strong>--jre</strong>=<em>&lt;jrePath&gt;</em></dt>
+<dd>
+<p>Path to an existing JRE installation directory to use with ScanCentral Client. The JRE version must be compatible with the ScanCentral Client version being installed (typically Java 17 for recent versions). This option is mutually exclusive with --with-jre and --jre-platform. When specified, the JRE location is stored in the installation descriptor and will always be used by the 'fcli tool sc-client run' command. If neither --with-jre nor --jre is specified, fcli will automatically detect a compatible JRE from environment variables; see --with-jre for details.</p>
 </dd>
 <dt class="hdlist1"><strong>--jre-platform</strong>=<em>&lt;jrePlatform&gt;</em></dt>
 <dd>
-<p>(PREVIEW) Specify the platform for which to install the JRE, implies --with-jre. See <a href="https://github.com/fortify/tool-definitions/blob/main/v1/jre.yaml" class="bare">https://github.com/fortify/tool-definitions/blob/main/v1/jre.yaml</a> for available platforms. Default value: current platform.</p>
+<p>Specify the platform for which to install the JRE, implies --with-jre. See <a href="https://github.com/fortify/tool-definitions/blob/main/v1/jre.yaml" class="bare">https://github.com/fortify/tool-definitions/blob/main/v1/jre.yaml</a> for available platforms. Default value: current platform.</p>
 </dd>
 <dt class="hdlist1"><strong>--[no-]global-bin</strong></dt>
 <dd>
@@ -140,9 +150,9 @@ fcli_version:
 <dd>
 <p>Tool version to install; see output of list command to view available versions. Default value: latest</p>
 </dd>
-<dt class="hdlist1"><strong>--with-jre</strong></dt>
+<dt class="hdlist1"><strong>--[no-]with-jre</strong></dt>
 <dd>
-<p>(PREVIEW) Install compatible JRE into the ScanCentral Client JRE directory, allowing ScanCentral Client to run even if no (compatible) JRE is installed elsewhere on the system.</p>
+<p>Install compatible JRE into the ScanCentral Client JRE directory, allowing ScanCentral Client to run even if no (compatible) JRE is installed elsewhere on the system. If neither --with-jre nor --jre is specified, fcli will automatically detect a compatible JRE from environment variables (SC_CLIENT_JAVA_HOME, SCANCENTRAL_JAVA_HOME, JAVA_HOME_&lt;version&gt;_&lt;arch&gt;, or JAVA_HOME_&lt;version&gt;). If no compatible JRE is found, fcli will automatically install an embedded JRE as if --with-jre was specified. Use --no-with-jre to explicitly skip embedded JRE installation and rely on environment-based JRE detection at runtime (including JAVA_HOME and PATH fallback).</p>
 </dd>
 <dt class="hdlist1"><strong>-y</strong>, <strong>--confirm</strong></dt>
 <dd>
@@ -153,68 +163,69 @@ fcli_version:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_output_options"><a class="anchor" href="#_output_options"></a>Output options</h2>
+<h2 id="_output_options_also_see_documentation_link_below"><a class="anchor" href="#_output_options_also_see_documentation_link_below"></a>Output options (also see documentation link below)</h2>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>type[=&lt;args&gt;]</em></dt>
+<dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>&lt;type+args&gt;</em></dt>
 <dd>
-<p>Specify output type and optional type arguments. Available output formats: csv, table, expr, json, xml, yaml. The 'expr' output format takes a string containing '{property}' placeholders, other output formats take an optional, comma-separated list of properties to include in the output.</p>
+<p>Select output type (csv, table, expr, json, xml, yaml) and optional type arguments.</p>
 </dd>
-<dt class="hdlist1"><strong>--store</strong>=<em>variableName[:&lt;propertyNames&gt;]</em></dt>
+<dt class="hdlist1"><strong>--store</strong>=<em>&lt;var&gt;[:&lt;prop&gt;]</em></dt>
 <dd>
-<p>Store the JSON results of this command in a variable. Variables can be managed through the 'fcli util variable' command, and can be referenced using ::variable::[property] on any subsequent command.</p>
+<p>Store JSON results in an fcli variable for later reference.</p>
 </dd>
-<dt class="hdlist1"><strong>--style</strong>=<em>&lt;outputStyleElements&gt;</em>[,<em>&lt;outputStyleElements&gt;</em>&#8230;&#8203;]</dt>
+<dt class="hdlist1">*--style*<em>=&lt;style&gt;,&#8230;&#8203;</em></dt>
 <dd>
-<p>Comma-separated list of style elements to apply to the selected output format. Allowed values: header, no-header, pretty, no-pretty, flat, no-flat, array, single, border, no-border, md-border.</p>
+<p>Select output style: header, no-header, pretty, no-pretty, flat, no-flat, array, single, border, no-border, md-border, wrap, no-wrap, fast-output, no-fast-output, envelope, no-envelope, csv-escape, no-csv-escape.</p>
 </dd>
 <dt class="hdlist1"><strong>--to-file</strong>=<em>&lt;outputFile&gt;</em></dt>
 <dd>
-<p>Write command output to the specified file instead of stdout.</p>
+<p>Write output to the specified file.</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_generic_fcli_options"><a class="anchor" href="#_generic_fcli_options"></a>Generic fcli options</h2>
+<h2 id="_generic_fcli_options_also_see_documentation_link_below"><a class="anchor" href="#_generic_fcli_options_also_see_documentation_link_below"></a>Generic fcli options (also see documentation link below)</h2>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>--debug</strong></dt>
 <dd>
-<p>Enable both fcli trace logging and collection of extra debugging data on applicable fcli actions and commands, for example enabling debug logging on tools invoked through fcli tool run commands, or enabling server-side debug log generation.</p>
+<p>Enable collection of debug logs.</p>
 </dd>
-<dt class="hdlist1"><strong>--env-prefix</strong>=<em>&lt;envPrefix&gt;</em></dt>
+<dt class="hdlist1"><strong>--env-prefix</strong>=<em>&lt;prefix&gt;</em></dt>
 <dd>
-<p>Environment variable prefix for resolving default option and parameter values. Default value: FCLI_DEFAULT.</p>
+<p>Prefix for resolving default option values. Default value: FCLI_DEFAULT.</p>
 </dd>
 <dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
 <dd>
-<p>Show this help message and exit. Use 'fcli &lt;command&gt; -h' to display help for subcommands.</p>
+<p>Use 'fcli [command] -h' to display help for fcli (sub-)commands.</p>
 </dd>
 <dt class="hdlist1"><strong>--log-file</strong>=<em>&lt;logFile&gt;</em></dt>
 <dd>
-<p>File where logging data will be written. Defaults to fcli.log in current directory if --log-level is specified.</p>
+<p>Write log output to file. Default: ./fcli.log if logging is enabled.</p>
 </dd>
 <dt class="hdlist1"><strong>--log-level</strong>=<em>&lt;logLevel&gt;</em></dt>
 <dd>
-<p>Set logging level. Note that DEBUG and TRACE levels may result in sensitive data being written to the log file. Allowed values: TRACE, DEBUG, INFO, WARN, ERROR, NONE.</p>
+<p>Set logging level: TRACE, DEBUG, INFO, WARN, ERROR, NONE.</p>
 </dd>
-<dt class="hdlist1"><strong>--log-mask</strong>=<em>&lt;logMaskLevel&gt;</em></dt>
+<dt class="hdlist1"><strong>--log-mask</strong>=<em>&lt;level&gt;</em></dt>
 <dd>
-<p>Masking level to apply to logging data. Allowed values: high, medium, low, none. Default value: medium. Note that this is on a best-effort basis; you should always check log contents for sensitive data before sharing or publishing logs.</p>
+<p>Log mask level: high, medium, low, none. Default: medium. Masking is done on a best-effort basis; no guarantee that all sensitive data will be masked.</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
+{% endraw %}
 </div>
 <div id="footer">
 <div id="footer-text">
 Version <br>
-Last updated 2025-04-30 09:01:38 UTC
+Last updated 2026-10-09 10:29:51 UTC
 </div>
 </div>
 </body>

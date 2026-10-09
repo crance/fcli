@@ -1,5 +1,5 @@
 ---
-title: fcli-fod-issue-update(1)
+title: 'fcli-fod-issue-update(1)'
 fcli_version: 
 ---
 
@@ -12,11 +12,12 @@ fcli_version:
 <title>fcli-fod-issue-update(1)</title>
 
 {% include asciidoc-head.html %}
+{% include fcli-enhancements.html %}
 
 </head>
 <body class="manpage toc2 toc-left">
 
-{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20250430.085926-dev_v3.x" %}
+{% include banner.html bannerTitle="FCLI: The Universal Fortify CLI" currentVersion="0.20261009.102642-dev_v3.x" %}
 
 
 <div id="header">
@@ -28,16 +29,17 @@ fcli_version:
 <li><a href="#_description">Description</a></li>
 <li><a href="#_options">Options</a></li>
 <li><a href="#_fod_session_name_options">FoD session name options</a></li>
-<li><a href="#_output_options">Output options</a></li>
-<li><a href="#_generic_fcli_options">Generic fcli options</a></li>
+<li><a href="#_output_options_also_see_documentation_link_below">Output options (also see documentation link below)</a></li>
+<li><a href="#_generic_fcli_options_also_see_documentation_link_below">Generic fcli options (also see documentation link below)</a></li>
 </ul>
 </div>
 <h2>Name</h2>
 <div class="sectionbody">
-<p>fcli-fod-issue-update - Bulk update vulnerabilities.</p>
+<p>fcli-fod-issue-update - Bulk update issues (vulnerabilities).</p>
 </div>
 </div>
 <div id="content">
+{% raw %}
 <div class="sect1">
 <h2 id="_synopsis"><a class="anchor" href="#_synopsis"></a>Synopsis</h2>
 <div class="sectionbody">
@@ -45,14 +47,15 @@ fcli_version:
 <p><strong>fcli fod issue update</strong> [<strong>--auditor-status</strong>=<em>&lt;auditorStatus&gt;</em>] [<strong>--comment</strong>=<em>&lt;comment&gt;</em>]
                       [<strong>--delim</strong>=<em>&lt;delimiter&gt;</em>] [<strong>--dev-status</strong>=<em>&lt;developerStatus&gt;</em>]
                       <strong>--rel</strong>=<em>id|app[:ms]:rel</em> [<strong>--severity</strong>=<em>&lt;severity&gt;</em>]
-                      <strong>--user</strong>=<em>&lt;user&gt;</em> <strong>--vuln-ids</strong>=<em>&lt;vulnIds&gt;</em>[,<em>&lt;vulnIds&gt;</em>&#8230;&#8203;]
-                      [<strong>--vuln-ids</strong>=<em>&lt;vulnIds&gt;</em>[,<em>&lt;vulnIds&gt;</em>&#8230;&#8203;]]&#8230;&#8203; [[<strong>-h</strong>]
-                      [<strong>--env-prefix</strong>=<em>&lt;envPrefix&gt;</em>] [<strong>--log-file</strong>=<em>&lt;logFile&gt;</em>]
-                      [<strong>--log-level</strong>=<em>&lt;logLevel&gt;</em>] [<strong>--log-mask</strong>=<em>&lt;logMaskLevel&gt;</em>]
-                      [<strong>--debug</strong>]] [[<strong>--fod-session</strong>=<em>&lt;sessionName&gt;</em>]] <em class="[<strong>-o</strong>=_type_
-                  _    [=&lt;args&gt;">] [<strong>--style</strong>=</em>&lt;outputStyleElements&gt;_[,
-                      <em>&lt;outputStyleElements&gt;</em>&#8230;&#8203;]]&#8230;&#8203; <em class="<strong>--store</strong>=_variableName[:_
-        _              &lt;propertyNames&gt;">] [<strong>--to-file</strong>=</em>&lt;outputFile&gt;_]]</p>
+                      [<strong>--user</strong>=<em>&lt;user&gt;</em>] <em class="<strong>--attrs</strong>=_[ATTR=VALUE">[,
+                      _[ATTR=VALUE]</em>&#8230;&#8203;]]&#8230;&#8203; [[<strong>-h</strong>] [<strong>--env-prefix</strong>=<em>&lt;prefix&gt;</em>]
+                      [<strong>--log-file</strong>=<em>&lt;logFile&gt;</em>] [<strong>--log-level</strong>=<em>&lt;logLevel&gt;</em>]
+                      [<strong>--log-mask</strong>=<em>&lt;level&gt;</em>] [<strong>--debug</strong>]]
+                      [[<strong>--fod-session</strong>=<em>&lt;sessionName&gt;</em>]] [[<strong>-o</strong>=<em>&lt;type+args&gt;</em>]
+                      [<strong>--style*<em>=&lt;style&gt;,&#8230;&#8203;</em>]&#8230;&#8203; <em class="</strong>--store*=_&lt;var&gt;[:&lt;prop&gt;">]
+                      [<strong>--to-file</strong>=</em>&lt;outputFile&gt;_]] (<strong>--vuln-ids</strong>=<em>&lt;vulnIds&gt;</em>[,
+                      <em>&lt;vulnIds&gt;</em>&#8230;&#8203;] [<strong>--vuln-ids</strong>=<em>&lt;vulnIds&gt;</em>[,<em>&lt;vulnIds&gt;</em>&#8230;&#8203;]]&#8230;&#8203; |
+                      <strong>--all</strong>)</p>
 </div>
 </div>
 </div>
@@ -60,7 +63,7 @@ fcli_version:
 <h2 id="_description"><a class="anchor" href="#_description"></a>Description</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This command allows for updating the audit information for multiple vulnerabilities. Note: the "id" here refers to the "vulnId" field which is not displayed in the FoD UI but is retrieved using the <code>fcli fod issue ls</code> command.</p>
+<p>This command allows for updating the audit information for multiple issues (vulnerabilities). Note: for --vuln-ids/--issue-ids, you can use either the numeric Id as shown in the FoD UI, or the "vulnId" UUID field that is retrieved using the <code>fcli fod issue ls</code> command. Alternatively, use --include-all/--all to update all issues from the specified release without providing issue ids.</p>
 </div>
 </div>
 </div>
@@ -69,13 +72,33 @@ fcli_version:
 <div class="sectionbody">
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><strong>--all, --include-all</strong></dt>
+<dd>
+<p>Include all the issues from the specified release in the update.</p>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+This will update all issues in the specified release regardless of their current status, so use with caution.
+</td>
+</tr>
+</table>
+</div>
+</dd>
+<dt class="hdlist1"><strong>--attrs, --attributes</strong>=<em>[ATTR=VALUE]</em>[,<em>[ATTR=VALUE]</em>&#8230;&#8203;]</dt>
+<dd>
+<p>A comma separated list of "attributeName=attributeValue" pairs to set on the issues. It is recommended to provide attribute names as they appear in the FoD UI. For example: "Business Criticality=High,Attribute 2=Value". You can also use multiple --attributes options to provide more "attributeName=attributeValue" pairs.</p>
+</dd>
 <dt class="hdlist1"><strong>--auditor-status</strong>=<em>&lt;auditorStatus&gt;</em></dt>
 <dd>
-<p>The Auditor Status to set for the vulnerabilities. Allowed values: PendingReview, RemediationRequired, RemediationDeferred, RiskMitigated, RiskAccepted, NotAnIssue.</p>
+<p>The Auditor Status to set for the issues, see the FoD UI for valid values.</p>
 </dd>
 <dt class="hdlist1"><strong>--comment</strong>=<em>&lt;comment&gt;</em></dt>
 <dd>
-<p>A comment to apply to all the vulnerabilities that are updated.</p>
+<p>A comment to apply to all of the issues that are updated.</p>
 </dd>
 <dt class="hdlist1"><strong>--delim</strong>=<em>&lt;delimiter&gt;</em></dt>
 <dd>
@@ -83,7 +106,7 @@ fcli_version:
 </dd>
 <dt class="hdlist1"><strong>--dev-status</strong>=<em>&lt;developerStatus&gt;</em></dt>
 <dd>
-<p>The Developer Status to set for the vulnerabilities. Allowed values: Open, InRemediation, Remediated, WillNotFix, ThirdPartyComponent.</p>
+<p>The Developer Status to set for the issues, see the FoD UI for valid values.</p>
 </dd>
 <dt class="hdlist1"><strong>--rel, --release</strong>=<em>id|app[:ms]:rel</em></dt>
 <dd>
@@ -91,15 +114,15 @@ fcli_version:
 </dd>
 <dt class="hdlist1"><strong>--severity</strong>=<em>&lt;severity&gt;</em></dt>
 <dd>
-<p>The Severity to set for the vulnerabilities. Allowed values: Low, Medium, High, Critical, Info, Best Practice.</p>
+<p>The Severity to set for the issues. Allowed values: Low, Medium, High, Critical, Info, Best Practice.</p>
 </dd>
 <dt class="hdlist1"><strong>--user</strong>=<em>&lt;user&gt;</em></dt>
 <dd>
-<p>The username or user id of the user the update will be recorded as.</p>
+<p>The username or user id of the user to assign the issue to.</p>
 </dd>
-<dt class="hdlist1"><strong>--vuln-ids</strong>=<em>&lt;vulnIds&gt;</em>[,<em>&lt;vulnIds&gt;</em>&#8230;&#8203;]</dt>
+<dt class="hdlist1"><strong>--vuln-ids, --issue-ids</strong>=<em>&lt;vulnIds&gt;</em>[,<em>&lt;vulnIds&gt;</em>&#8230;&#8203;]</dt>
 <dd>
-<p>Comma separate list of the vulnerability ids to be updated.</p>
+<p>Comma separated list of the issue ids to be updated.</p>
 </dd>
 </dl>
 </div>
@@ -119,68 +142,69 @@ fcli_version:
 </div>
 </div>
 <div class="sect1">
-<h2 id="_output_options"><a class="anchor" href="#_output_options"></a>Output options</h2>
+<h2 id="_output_options_also_see_documentation_link_below"><a class="anchor" href="#_output_options_also_see_documentation_link_below"></a>Output options (also see documentation link below)</h2>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
-<dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>type[=&lt;args&gt;]</em></dt>
+<dt class="hdlist1"><strong>-o</strong>, <strong>--output</strong>=<em>&lt;type+args&gt;</em></dt>
 <dd>
-<p>Specify output type and optional type arguments. Available output formats: csv, table, expr, json, xml, yaml. The 'expr' output format takes a string containing '{property}' placeholders, other output formats take an optional, comma-separated list of properties to include in the output.</p>
+<p>Select output type (csv, table, expr, json, xml, yaml) and optional type arguments.</p>
 </dd>
-<dt class="hdlist1"><strong>--store</strong>=<em>variableName[:&lt;propertyNames&gt;]</em></dt>
+<dt class="hdlist1"><strong>--store</strong>=<em>&lt;var&gt;[:&lt;prop&gt;]</em></dt>
 <dd>
-<p>Store the JSON results of this command in a variable. Variables can be managed through the 'fcli util variable' command, and can be referenced using ::variable::[property] on any subsequent command.</p>
+<p>Store JSON results in an fcli variable for later reference.</p>
 </dd>
-<dt class="hdlist1"><strong>--style</strong>=<em>&lt;outputStyleElements&gt;</em>[,<em>&lt;outputStyleElements&gt;</em>&#8230;&#8203;]</dt>
+<dt class="hdlist1">*--style*<em>=&lt;style&gt;,&#8230;&#8203;</em></dt>
 <dd>
-<p>Comma-separated list of style elements to apply to the selected output format. Allowed values: header, no-header, pretty, no-pretty, flat, no-flat, array, single, border, no-border, md-border.</p>
+<p>Select output style: header, no-header, pretty, no-pretty, flat, no-flat, array, single, border, no-border, md-border, wrap, no-wrap, fast-output, no-fast-output, envelope, no-envelope, csv-escape, no-csv-escape.</p>
 </dd>
 <dt class="hdlist1"><strong>--to-file</strong>=<em>&lt;outputFile&gt;</em></dt>
 <dd>
-<p>Write command output to the specified file instead of stdout.</p>
+<p>Write output to the specified file.</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_generic_fcli_options"><a class="anchor" href="#_generic_fcli_options"></a>Generic fcli options</h2>
+<h2 id="_generic_fcli_options_also_see_documentation_link_below"><a class="anchor" href="#_generic_fcli_options_also_see_documentation_link_below"></a>Generic fcli options (also see documentation link below)</h2>
 <div class="sectionbody">
 <div class="dlist">
 <dl>
 <dt class="hdlist1"><strong>--debug</strong></dt>
 <dd>
-<p>Enable both fcli trace logging and collection of extra debugging data on applicable fcli actions and commands, for example enabling debug logging on tools invoked through fcli tool run commands, or enabling server-side debug log generation.</p>
+<p>Enable collection of debug logs.</p>
 </dd>
-<dt class="hdlist1"><strong>--env-prefix</strong>=<em>&lt;envPrefix&gt;</em></dt>
+<dt class="hdlist1"><strong>--env-prefix</strong>=<em>&lt;prefix&gt;</em></dt>
 <dd>
-<p>Environment variable prefix for resolving default option and parameter values. Default value: FCLI_DEFAULT.</p>
+<p>Prefix for resolving default option values. Default value: FCLI_DEFAULT.</p>
 </dd>
 <dt class="hdlist1"><strong>-h</strong>, <strong>--help</strong></dt>
 <dd>
-<p>Show this help message and exit. Use 'fcli &lt;command&gt; -h' to display help for subcommands.</p>
+<p>Use 'fcli [command] -h' to display help for fcli (sub-)commands.</p>
 </dd>
 <dt class="hdlist1"><strong>--log-file</strong>=<em>&lt;logFile&gt;</em></dt>
 <dd>
-<p>File where logging data will be written. Defaults to fcli.log in current directory if --log-level is specified.</p>
+<p>Write log output to file. Default: ./fcli.log if logging is enabled.</p>
 </dd>
 <dt class="hdlist1"><strong>--log-level</strong>=<em>&lt;logLevel&gt;</em></dt>
 <dd>
-<p>Set logging level. Note that DEBUG and TRACE levels may result in sensitive data being written to the log file. Allowed values: TRACE, DEBUG, INFO, WARN, ERROR, NONE.</p>
+<p>Set logging level: TRACE, DEBUG, INFO, WARN, ERROR, NONE.</p>
 </dd>
-<dt class="hdlist1"><strong>--log-mask</strong>=<em>&lt;logMaskLevel&gt;</em></dt>
+<dt class="hdlist1"><strong>--log-mask</strong>=<em>&lt;level&gt;</em></dt>
 <dd>
-<p>Masking level to apply to logging data. Allowed values: high, medium, low, none. Default value: medium. Note that this is on a best-effort basis; you should always check log contents for sensitive data before sharing or publishing logs.</p>
+<p>Log mask level: high, medium, low, none. Default: medium. Masking is done on a best-effort basis; no guarantee that all sensitive data will be masked.</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
+{% endraw %}
 </div>
 <div id="footer">
 <div id="footer-text">
 Version <br>
-Last updated 2025-04-30 09:01:38 UTC
+Last updated 2026-10-09 10:29:50 UTC
 </div>
 </div>
 </body>
